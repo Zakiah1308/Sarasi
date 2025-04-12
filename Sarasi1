@@ -1,0 +1,112 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pemeriksa Kesalahan Bahasa Indonesia</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card">
+            <div class="card-header text-center">
+              <h3>Pemeriksa Kesalahan Bahasa Indonesia</h3>
+            </div>
+            <div class="card-body">
+              <textarea
+                id="inputText"
+                class="form-control"
+                rows="6"
+                placeholder="Tulis teks Bahasa Indonesia di sini..."
+              ></textarea>
+              <button
+                id="checkButton"
+                class="btn btn-primary btn-block mt-3"
+              >
+                Periksa Teks
+              </button>
+              <div
+                id="result"
+                class="mt-3"
+                style="display: none; border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"
+              >
+                <h5>Hasil Pemeriksaan:</h5>
+                <p id="output"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
+/* style.css */
+body {
+  background-color: #f0f4f8;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  color: #007bff;
+}
+
+textarea {
+  font-size: 16px;
+}
+
+#result {
+  background-color: #e9ecef;
+  border-radius: 5px;
+}
+
+
+// script.js
+const contohKesalahan = {
+  tdk: 'tidak',
+  sy: 'saya',
+  krn: 'karena',
+  dg: 'dengan',
+  utk: 'untuk'
+};
+
+function cekKesalahan(teks) {
+  const regex = new RegExp(`\\b(${Object.keys(contohKesalahan).join('|')})\\b`, 'gi');
+  return teks.replace(regex, (match) => {
+    const kataBenar = contohKesalahan[match.toLowerCase()];
+    return `<span class='text-danger'>${match}</span> <span class='text-success'>(${kataBenar})</span>`;
+  });
+}
+
+document.getElementById('checkButton').addEventListener('click', function () {
+  const inputText = document.getElementById('inputText').value;
+
+  if (inputText.trim()) {
+    const hasil = cekKesalahan(inputText);
+    document.getElementById('output').innerHTML = hasil;
+    document.getElementById('result').style.display = 'block';
+  } else {
+    alert('Masukkan teks yang ingin diperiksa!');
+  }
+});
